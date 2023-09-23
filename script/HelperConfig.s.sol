@@ -41,19 +41,15 @@ contract HelperConfig is Script {
         });
     }
 
-    function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
+    function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory anvilNetworkConfig) {
         if (activeNetworkConfig.wethUsdPriceFeed != address(0)) {
             return activeNetworkConfig;
         }
 
         vm.startBroadcast();
-       //MockV3Aggregator ethUsdPriceFeed = new MockV3Aggregator(DECIMALS, ETH_USD_PRICE);
-       MockV3Aggregator ethUsdPriceFeed = new MockV3Aggregator({decimals: DECIMALS, description: "ETH/USD", version: 0, initialAnswer: ETH_USD_PRICE});
+        MockV3Aggregator ethUsdPriceFeed = new MockV3Aggregator(DECIMALS, ETH_USD_PRICE);
 
-
-       // ERC20Mock wethMock = new ERC20Mock("WETH", "WETH", msg.sender, 1000e8);
-       ERC20Mock wethMock = new ERC20Mock({name: "WETH", symbol: "WETH", initialBalance: 1000e8}, msg.sender);
-
+        ERC20Mock wethMock = new ERC20Mock("WBTC", "WBTC", msg.sender, 1000e8);
 
         MockV3Aggregator btchUsdPriceFeed = new MockV3Aggregator(DECIMALS, BTC_USD_PRICE);
 
@@ -61,7 +57,7 @@ contract HelperConfig is Script {
 
         vm.stopBroadcast();
 
-        return NetworkConfig({
+        anvilNetworkConfig = NetworkConfig({
             wethUsdPriceFeed: address(ethUsdPriceFeed),
             wbtcUsdPriceFeed: address(btchUsdPriceFeed),
             weth: address(wethMock),
@@ -70,4 +66,3 @@ contract HelperConfig is Script {
         });
     }
 }
- 
