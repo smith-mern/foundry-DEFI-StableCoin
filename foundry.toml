@@ -10,6 +10,6 @@ remappings = [
 [invariant]
 runs = 200
 depth = 200
-fail_on_revert = false
+fail_on_revert = true
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/crates/config

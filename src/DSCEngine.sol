@@ -46,7 +46,7 @@ contract DSCEngine is ReentrancyGuard {
     // Errors
     error DSCEngine__NeedsMoreThanZero();
     error DSCEngine__TokenAndPriceFeedLengthMismatch();
-    error DSCEngine__TokenNotAllowed();
+    error DSCEngine__TokenNotAllowed(address token);
     error DSCEngine__TranferFailed();
     error DSCEngine__BreaksHealthFactor(uint256 healthFactor);
     error DSCEngine__MintFailed();
@@ -88,7 +88,7 @@ contract DSCEngine is ReentrancyGuard {
 
     modifier isAllowedToken(address token) {
         if (s_priceFeeds[token] == address(0)) {
-            revert DSCEngine__TokenNotAllowed();
+            revert DSCEngine__TokenNotAllowed(token);
         }
         _;
     }
@@ -212,7 +212,7 @@ contract DSCEngine is ReentrancyGuard {
         // giving a bonus to the liquidator
         uint256 bonusCollateral = (tokenAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
         uint256 totalCollateralToRedeem = tokenAmountFromDebtCovered + bonusCollateral;
-        _redeemCollateral(collateral, totalCollateralToRedeem, user, user);
+        _redeemCollateral(collateral, totalCollateralToRedeem, user, msg.sender);
         //burning the DSC
         _burnDsc(debtToCover, user, msg.sender);
 

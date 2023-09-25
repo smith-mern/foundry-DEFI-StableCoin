@@ -22,7 +22,8 @@ contract OpenInvariants is StdInvariant, Test {
     function setUp() external {
         deployer = new DeployDSC();
         (dsc, engine, helperConfig) = deployer.run();
-        (weth, wbtc,,,) = helperConfig.activeNetworkConfig();
+        // (weth, wbtc,,,) = helperConfig.activeNetworkConfig();
+        (,, weth, wbtc,) = helperConfig.activeNetworkConfig();
         targetContract(address(engine));
     }
 
