@@ -81,7 +81,7 @@ contract DSCEngineTest is Test {
     function testRevertWithUnapprovedCollateral() public {
         ERC20Mock NaijaToken = new ERC20Mock("NaijaToken", "NaijaToken", USER, AMOUNT_CollATERAL);
         vm.startPrank(USER);
-        vm.expectRevert(DSCEngine.DSCEngine__TokenNotAllowed.selector);
+        vm.expectRevert(abi.encodeWithSelector(DSCEngine.DSCEngine__TokenNotAllowed.selector));
         engine.depositCollateral(address(NaijaToken), AMOUNT_CollATERAL);
         vm.stopPrank();
     }
